@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hypersomnia</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <main class="main">
+    <header>
+      <h1>Hypersomnia</h1>
+    </header>
+    <section class="containerMain">
+      <div id="box1">
+        <label>Selecione ou adicione uma API:</label>
+        <select id="saveApis" onchange="selectSavedApi()">
+          <option value="">Escolha uma API salva...</option>
+        </select>
+        <input type="text" id="apiUrl" placeholder="https://exemplo.com/api/user">
+        <button onclick="saveApi()">Salvar API</button>
+      </div>
+      <div id="box2">
+        <label>Método:</label>
+        <select id="method">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+      <div id="box3">
+        <label>Headers (JSON):</label>
+        <textarea id="headers" placeholder='{"Authorization": "Bearer token"}'></textarea>
+        <label>Corpo da requisição (JSON, Opcional):</label>
+        <textarea id="body" placeholder='{"nome": "Gustavo"}'></textarea>
+        <button onclick="testarApi()">Enviar</button>
+      </div>
+      
+      <h2>Resposta:</h2>
+      <textarea id="resposta" readonly></textarea>
+    </section>
+  </main>
+  <script src="./main.js"></script>
+</body>
+
+</html>
