@@ -5,7 +5,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hypersomnia</title>
-  <link rel="stylesheet" href="/style.css">
+  <!--link rel="stylesheet" href="/style.css"-->
+  <style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  .main {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .containerMain {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .containerMain div {
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  select,
+  textarea,
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+  
+  button {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background: #0056b3;
+  }
+  
+  #resposta {
+    background: #f9f9f9;
+    font-family: monospace;
+    color: #333;
+    height: 300px !important;
+  }
+  </style>
 </head>
 
 <body>
@@ -43,7 +135,76 @@
       <textarea id="resposta" readonly></textarea>
     </section>
   </main>
-  <script src="/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", loadSavedApis);
+
+function loadSavedApis() {
+    const savedApis = JSON.parse(localStorage.getItem("apis")) || [];
+    const select = document.getElementById("saveApis"); // Correção do ID
+    select.innerHTML = '<option value="">Escolha uma API salva...</option>';
+    savedApis.forEach(api => {
+        const option = document.createElement("option");
+        option.value = api;
+        option.textContent = api;
+        select.appendChild(option);
+    });
+}
+
+function selectSavedApi() {
+    document.getElementById("apiUrl").value = document.getElementById("saveApis").value;
+}
+
+function saveApi() {
+    const apiUrl = document.getElementById("apiUrl").value;
+    if (!apiUrl) return alert("Insira uma API para salvar!");
+    let savedApis = JSON.parse(localStorage.getItem("apis")) || [];
+    if (!savedApis.includes(apiUrl)) {
+        savedApis.push(apiUrl);
+        localStorage.setItem("apis", JSON.stringify(savedApis));
+        loadSavedApis();
+    }
+}
+
+async function testarApi() {
+    const url = document.getElementById("apiUrl").value;
+    const method = document.getElementById("method").value;
+    const headersInput = document.getElementById("headers").value;
+    const bodyInput = document.getElementById("body").value;
+
+    if (!url) return alert("Insira uma URL de API!");
+
+    let headers = {};
+    try {
+        headers = headersInput ? JSON.parse(headersInput) : {};
+    } catch (e) {
+        alert("Headers inválidos! Certifique-se de que está no formato JSON.");
+        return;
+    }
+
+    let body = null;
+    if (method !== "GET" && bodyInput.trim() !== "") {
+        try {
+            body = JSON.parse(bodyInput);
+        } catch (e) {
+            alert("Corpo da requisição inválido! Certifique-se de que está no formato JSON.");
+            return;
+        }
+    }
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers,
+            body: body ? JSON.stringify(body) : null
+        });
+
+        const responseData = await response.json();
+        document.getElementById("resposta").value = JSON.stringify(responseData, null, 2);
+    } catch (error) {
+        document.getElementById("resposta").value = "Erro ao chamar API: " + error.message;
+    }
+}
+  </script>
 </body>
 
 </html>
