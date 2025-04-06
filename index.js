@@ -24,7 +24,8 @@ app.post("/proxy", async (req, res) => {
   }
 });
 
-
+/*
 app.listen(porta, ()=>{
   console.log(`Servidor rodando na porta http://localhost:${porta}`)
-})
+})*/
+module.exports = app;
