@@ -4,9 +4,8 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "start",
     "start": "node index.js"
   },
   "author": "Google LLC",
@@ -22,6 +21,6 @@
     "scss": "^0.2.4"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.9"
   }
 }
