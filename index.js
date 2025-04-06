@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.get("/", (req, res)=>{
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "pages", "index.html"));
 })
 
 app.post("/proxy", async (req, res) => {
